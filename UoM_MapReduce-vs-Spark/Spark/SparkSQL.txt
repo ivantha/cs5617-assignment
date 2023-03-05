@@ -1,0 +1,57 @@
+==========
+
+spark-shell
+
+val df = spark.read.format("csv").option("header", "true").load("s3://oshanawsbucket/input/DelayedFlights-updated.csv");
+
+df.createOrReplaceTempView("delay_flights")
+
+==========
+
+spark.time {val result = spark.sql("SELECT Year, avg((CarrierDelay /ArrDelay)*100) from delay_flights GROUP BY Year").show()}
+
+13755 ms
+12904 ms
+991 ms
+766 ms
+776 ms
+
+==========
+
+spark.time {val result = spark.sql("SELECT Year, avg((NASDelay /ArrDelay)*100) from delay_flights GROUP BY Year").show()}
+
+12604 ms
+1033 ms
+679 ms
+724 ms
+654 ms
+
+==========
+
+spark.time {val result = spark.sql("SELECT Year, avg((WeatherDelay /ArrDelay)*100) from delay_flights GROUP BY Year").show()}
+
+12609 ms
+886 ms
+688 ms
+710 ms
+751 ms
+
+==========
+
+spark.time {val result = spark.sql("SELECT Year, avg((LateAircraftDelay /ArrDelay)*100) from delay_flights GROUP BY Year").show()}
+
+12984 ms
+975 ms
+745 ms
+602 ms
+675 ms
+
+==========
+
+spark.time {val result = spark.sql("SELECT Year, avg((SecurityDelay /ArrDelay)*100) from delay_flights GROUP BY Year").show()}
+
+12468 ms
+1062 ms
+648 ms
+682 ms
+585 ms

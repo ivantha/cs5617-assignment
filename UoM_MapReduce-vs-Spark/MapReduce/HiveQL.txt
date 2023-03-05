@@ -1,0 +1,84 @@
+==========
+
+hive
+
+# CREATE EXTERNAL TABLE delay_flights
+# ROW FORMAT DELIMITED
+# FIELDS TERMINATED BY ','
+# LOCATION 's3://oshanawsbucket/input/DelayedFlights-updated.csv';
+
+
+CREATE EXTERNAL TABLE IF NOT EXISTS delay_flights (
+  Year INT,
+  CarrierDelay INT,
+  NASDelay INT,
+  WeatherDelay INT,
+  LateAircraftDelay INT,
+  SecurityDelay INT,
+  ArrDelay INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION 's3://oshanawsbucket/input/'
+TBLPROPERTIES ('skip.header.line.count'='1', 'serialization.null.format'='');
+
+==========
+
+SELECT Year, AVG(CarrierDelay / ArrDelay * 100)
+FROM delay_flights
+GROUP BY Year;
+
+22.522 s
+16.835 s
+11.898 s
+11.678 s
+16.203 s
+
+==========
+
+SELECT Year, AVG(NASDelay / ArrDelay * 100)
+FROM delay_flights
+GROUP BY Year;
+
+15.307 s
+12.25 s
+12.2 s
+12.999 s
+10.848 s
+
+==========
+
+SELECT Year, AVG(WeatherDelay / ArrDelay * 100)
+FROM delay_flights
+GROUP BY Year;
+
+15.62 s
+11.899 s
+15.05 s
+13.9 s
+16.217 s
+
+==========
+
+SELECT Year, AVG(LateAircraftDelay / ArrDelay * 100)
+FROM delay_flights
+GROUP BY Year;
+
+11.978 s
+16.291 s
+11.385 s
+11.049 s
+16.301 s
+
+==========
+
+SELECT Year, AVG(SecurityDelay / ArrDelay * 100)
+FROM delay_flights
+GROUP BY Year;
+
+15.356 s
+13.455 s
+11.459 s
+11.461 s
+15.126 s
